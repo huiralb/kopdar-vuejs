@@ -7,18 +7,45 @@
 		<title>Belajar Vuejs</title>
 
 		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
 
-		<section class="app">
+		<section id="app" v-cloak>
 
 			<h1>{{ msg }}</h1>
-			
+
+			<div class="form">
+				<p>
+					Nama Depan : <input type="text" v-model="person.first_name">
+				</p>
+				<p>
+					Nama Belakang : <input type="text" v-model="person.last_name">
+				</p>
+				<p>
+					Email : <input type="email" v-model="person.email">
+				</p>
+				<button @click="tambah" :disabled="isDisabled" v-if="form == 'add'">Tambah</button>
+				<button @click="update" v-if="form == 'edit'">Update</button>
+			</div>
+
+			<hr>
+
 			<ul>
-				<li v-for="user in users">
-					{{ user }}
+				<li v-for="(person, index) in persons">
+					<h2>{{ person.first_name }} {{ person.last_name }}</h2>
+					<p>{{ person.email }}</p>
+					<button @click="edit(person)">Edit</button>
+					<button @click="remove(index)">Delete</button>
 				</li>
 			</ul>
+
+			<input type="text" v-model="msg">
+
 
 
 		</section>
@@ -27,24 +54,83 @@
 		<script src="js/vue.js"></script>
 
 		<script>
+
 			var actors = ['Van dame', 'John Doe', 'Smith'];
 
-		
+			var persons =  [
+				{
+				    first_name	: "Olivia",
+				    last_name	: "Uyainah",
+				    email		: "tpertiwi@yahoo.co.id",
+				},
+
+				{
+				    first_name	: "Slamet",
+				    last_name	: "Hartati",
+				    email		: "bella.mulyani@padmasari.co.id",
+				},
+			];
 
 			new Vue({
 
 				el : '#app',
 				data : {
 					msg : 'Hello world',
-
-					user : {
-						    first_name: "",
-						    last_name: "",
-						    email: "",
-					},
-
 					users : actors,
+					persons : persons,
+					isDisabled : true,
+					form : 'add',
+					person : {
+						first_name : '',
+						last_name : '',
+						email : '',
+					}
+				},
+				watch : {
+					'person.first_name' : function(value) {
+						console.log(value)
+						if( value != '' )
+						{
+							this.isDisabled = false;
+						}
+					}
+				},
+				methods : {
+					tambah : function() {
+						this.form = 'add';
 
+						if(this.person.first_name == '')
+						{
+							alert( 'Nama depan wajib diisi' );
+							return false;
+						}
+						// tambah data persons
+						this.persons.push( this.person );
+						// reset form
+						this.person = {
+							first_name : '',
+							last_name : '',
+							email : '',
+						}
+					},
+					edit : function(person) {
+						this.person = person;
+						this.form = 'edit';
+					},
+					update : function() {
+						this.person = {
+							first_name : '',
+							last_name : '',
+							email : '',
+						}
+						this.form = 'add';
+					},
+					remove : function(index) {
+						this.persons.splice(index, 1)
+					}
+				},
+				mounted : function() {
+					console.log('Sudah ok')
 				}
 			});
 		</script>
