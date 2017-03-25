@@ -6,19 +6,47 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Belajar Vuejs</title>
 
-		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 	</head>
 	<body>
 
-		<section id="app">
-			<div class="jumbotron text-center">
-				<div class="container">
-					<h1>VUE JS</h1>
-					<p>Belajar vuejs</p>
-				</div>
-			</div>
+		<section class="app">
+
+			<h1>{{ msg }}</h1>
+			
+			<ul>
+				<li v-for="user in users">
+					{{ user }}
+				</li>
+			</ul>
+
+
 		</section>
 
-		<script src="/js/vue.js"></script>
+
+		<script src="js/vue.js"></script>
+
+		<script>
+			var actors = ['Van dame', 'John Doe', 'Smith'];
+
+		
+
+			new Vue({
+
+				el : '#app',
+				data : {
+					msg : 'Hello world',
+
+					user : {
+						    first_name: "",
+						    last_name: "",
+						    email: "",
+					},
+
+					users : actors,
+
+				}
+			});
+		</script>
 	</body>
 </html>
